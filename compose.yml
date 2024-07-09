@@ -1,20 +1,21 @@
 name: laravel-app
 
 services:
-  composer: &base_command
+  composer:
     image: composer
-    container_name: laravel-command
+    container_name: laravel-composer
     volumes:
       - ./:/app
     entrypoint: ["composer",]
-  php:
-    <<: *base_command
+  php: &base_php
+    image: php:8.2-apache
+    container_name: laravel-php
+    volumes:
+      - ./:/var/www/html
     entrypoint: ["php",]
   serve:
-    image: composer
+    <<: *base_php
     container_name: laravel-app
     ports:
       - '8000:8000'
-    volumes:
-      - ./:/app
     entrypoint: ["php", "artisan", "serve", "--host=0.0.0.0"]
