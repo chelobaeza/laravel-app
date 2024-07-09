@@ -1,0 +1,20 @@
+name: laravel-app
+
+services:
+  composer: &base_command
+    image: composer
+    container_name: laravel-command
+    volumes:
+      - ./:/app
+    entrypoint: ["composer",]
+  php:
+    <<: *base_command
+    entrypoint: ["php",]
+  serve:
+    image: composer
+    container_name: laravel-app
+    ports:
+      - '8000:8000'
+    volumes:
+      - ./:/app
+    entrypoint: ["php", "artisan", "serve", "--host=0.0.0.0"]
