@@ -1,6 +1,14 @@
 name: laravel-app
 
 services:
+  db:
+    image: mysql
+    restart: always
+    ports:
+      - 3306:3306
+    environment:
+      MYSQL_DATABASE: laravel
+      MYSQL_ROOT_PASSWORD: pass
   composer:
     image: composer
     container_name: laravel-composer
@@ -8,7 +16,10 @@ services:
       - ./:/app
     entrypoint: ["composer",]
   php: &base_php
-    image: php:8.2-apache
+    build:
+      context: .
+      dockerfile: Dockerfile
+    image: base-php
     container_name: laravel-php
     volumes:
       - ./:/var/www/html
