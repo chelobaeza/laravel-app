@@ -9,12 +9,6 @@ services:
     environment:
       MYSQL_DATABASE: laravel
       MYSQL_ROOT_PASSWORD: pass
-  composer:
-    image: composer
-    container_name: laravel-composer
-    volumes:
-      - ./:/app
-    entrypoint: ["composer",]
   php: &base_php
     build:
       context: .
@@ -24,6 +18,10 @@ services:
     volumes:
       - ./:/var/www/html
     entrypoint: ["php",]
+  composer:
+    <<: *base_php
+    container_name: laravel-composer
+    entrypoint: ["composer",]
   serve:
     <<: *base_php
     container_name: laravel-app
